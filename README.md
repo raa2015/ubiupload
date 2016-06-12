@@ -1,6 +1,6 @@
 # UbiUpLoad 1.0
 
-**Referencia: Subida Automatica de archivos de configuraciones "cfg" a dispositivos Nano Station.**
+    **Referencia: Subida Automatica de archivos de configuraciones "cfg" a dispositivos Nano Station.**
 
 Cuando tenemos una extensa red con muchos clientes se vuelve tedioso y aburrido ir subiendo de a uno y a mano las
 configuraciones nuevas que tengamos, esta herramienta te ayuda a simplificar esta tarea.
