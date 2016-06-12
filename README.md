@@ -20,6 +20,6 @@ configuraciones nuevas que tengamos, esta herramienta te ayuda a simplificar est
 **6 - Ingresar la contraseña que se utiliza.**
 
 
-Nota: Esta herramienta solo busca las ip que estan activas.
+               Nota: Esta herramienta solo busca las ip que estan activas.
 
-      **Autor: Ariel Anonis - @ariel_anonis**
+**Autor: Ariel Anonis - @ariel_anonis**
