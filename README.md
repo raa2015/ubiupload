@@ -1,4 +1,4 @@
-# UbiUpLoad 1.0
+# UbiUpLoad
 
     Referencia: Subida Automatica de archivos de configuraciones "cfg" a dispositivos Nano Station.
 
