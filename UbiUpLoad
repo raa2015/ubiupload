@@ -74,7 +74,7 @@ echo ""
 
 for linea in $archlinea ; do
     
-    sshpass -p ${PA} scp -P ${PU} -o StrictHostKeyChecking=no  1.cfg ${US}@${linea}:/tmp/1.cfg;
+    sshpass -p ${PA} scp -P ${PU} -o StrictHostKeyChecking=no  nuevo.cfg ${US}@${linea}:/tmp/1.cfg;
     
     sshpass -p ${PA} ssh -p ${PU} -o StrictHostKeyChecking=no ${US}@${linea} "cp /tmp/1.cfg /tmp/system.cfg && cfgmtd -f /tmp/system.cfg -w && reboot"
     
