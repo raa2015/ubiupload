@@ -1,0 +1,92 @@
+#!/bin/bash
+#Autor: Ariel Anonis - @ariel_anonis
+
+#SE COMPRUEBA EN QUE USUARIO SE ESTA EJECUTANDO Y BORRA EL KNOW_HOSTS DE LOS SSH
+BorraSsh() {
+    if [ $USER != 'root' ]
+        then
+           rm /home/$USER/.ssh/known_hosts
+        else
+           rm /root/.ssh/known_hosts 
+    fi
+}
+BorraSsh;
+
+clear
+echo -e '\e[1;33m------------------------------------\e[0m'
+echo -e '\e[1;33m   UbiUpLoad 1.0 Nano Station ;-) \e[0m'
+echo -e '\e[1;33m------------------------------------\e[0m'
+echo ""
+sleep 2;
+
+#SE INGRESA LA IP PARA UTILIZARLO CON EL NMAP
+
+echo "Ingrese un Rango IP de 9 numeros ej: (100.110.120): "; 
+
+read -p "--> Ingrese Rango: " IP
+
+echo ""
+
+echo "Aguarde Analizando rango IP..."
+
+echo ""
+
+# BUSCA IPS ACTIVAS Y LOS GUARDA EN UN ARCHIVO
+
+nmap -sP ${IP}.* |  grep -oiE '([0-9]{1,3}\.){3}[0-9]{1,3}' | grep -v 255 > ips.txt
+sed -i '1d' ips.txt
+echo ""
+
+#CUENTA Y MUESTRA EN PANTALLA LA CANTIDAD DE IPS QUE ENCONTRO
+cuenta=`cat ips.txt | grep -oiEc '([0-9]{1,3}\.){3}[0-9]{1,3}'`
+
+echo -e "    Se encontraron,\e[1;32m $cuenta\e[0m Ip para analizar"
+
+echo ""
+echo ""
+
+#USUARIO, CONTRASEÑA Y PUERTO PARA EL SSHPASS
+echo -e '\e[1;33m-------------------------------------------\e[0m'
+echo -e '\e[1;33m  Ingrese el Usuario, Puerto y Contraseña:\e[0m'
+echo -e '\e[1;33m-------------------------------------------\e[0m'
+
+echo ""
+
+read -p "--> Usuario: " US
+read -p "--> Puerto: " PU
+echo "Escriba la Contraseña:"
+echo -n
+read PA
+
+clear
+echo ""
+echo "Ingresando al Sistema!!!"
+echo ""
+sleep 2;
+
+#VARIABLES PARA QUE LEA EL ARCHIVO DE IPS.TXT
+archivo='ips.txt'
+archlinea=`cat $archivo`
+echo "Subiendo archivo de Configuracion a los Ubiquiti!"
+echo ""
+echo ""
+#FOR I PARA QUE LEA LINEA POR LINEA LAS IPS DEL ARCHIVO IPS.TXT
+
+for linea in $archlinea ; do
+    
+    sshpass -p ${PA} scp -P ${PU} -o StrictHostKeyChecking=no  1.cfg ${US}@${linea}:/tmp/1.cfg;
+    
+    sshpass -p ${PA} ssh -p ${PU} -o StrictHostKeyChecking=no ${US}@${linea} "cp /tmp/1.cfg /tmp/system.cfg && cfgmtd -f /tmp/system.cfg -w && reboot"
+    
+    echo ""
+   
+
+#BORRA LA PRIMERA IP LEIDA POR EL FOR I
+
+sed -i '1d' ips.txt
+
+done 
+
+sleep 2;
+echo ""
+echo "FINALIZADA SUBIDA DE ARCHVIVOS DE CONFIGURACION!!!"
